@@ -13,10 +13,12 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping
+
+
+    @GetMapping("/posts")
     public String getAllPosts(Model model) {
         List<Post> posts = postService.findAll();  // 모든 게시물 검색
-        model.addAttribute("post", posts);  // 검색된 게시물을 모델에 추가. 모델은 뷰에 데이터를 전달
-        return "post-list";
+        model.addAttribute("posts", posts);  // 검색된 게시물을 모델에 추가. 모델은 뷰에 데이터를 전달
+        return "post_list";
     }
 }
