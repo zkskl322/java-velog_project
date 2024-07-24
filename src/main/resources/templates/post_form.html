@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-</head>
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
+<div layout:fragment="content" class="container my-3">
 <body>
-    <h1>글 등록</h1>
-    <form action="">
-        <button type="submit">글 등록</button>
-    </form>
+<h1>새 게시물 작성</h1>
+<form action="/create" method="post">  <!-- /create로 POST 요청을 보내는 form -->
+    <label for="title">제목:</label><br>
+    <input type="text" id="title" name="title"><br>  <!-- 제목 입력 필드 -->
+    <label for="content">내용:</label><br>
+    <textarea id="content" name="content"></textarea><br>  <!-- 내용 입력 필드 -->
+    <input type="submit" value="등록">  <!-- 등록 버튼 -->
+</form>
 </body>
+</div>
 </html>

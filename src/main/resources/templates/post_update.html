@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
+<div layout:fragment="content" class="container my-3">
+    <body>
+    <h1>게시물 수정</h1>
+    <form action="/posts/{id}/update" method="post" th:action="@{/posts/{id}/update(id=${post.id})}" th:object="${post}">  <!-- /posts/{id}/update로 POST 요청을 보내는 form -->
+        <label for="title">제목:</label><br>
+        <input type="text" id="title" name="title" th:value="${post.title}"><br>  <!-- 제목 입력 필드 -->
+        <label for="content">내용:</label><br>
+        <textarea id="content" name="content" th:text="${post.content}"></textarea><br>  <!-- 내용 입력 필드 -->
+        <input type="submit" value="수정">  <!-- 수정 버튼 -->
+    </form>
+    </body>
+</div>
+</html>
