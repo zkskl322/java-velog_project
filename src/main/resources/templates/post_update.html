@@ -8,7 +8,8 @@
         <input type="text" id="title" name="title" th:value="${post.title}"><br>  <!-- 제목 입력 필드 -->
         <label for="content">내용:</label><br>
         <textarea id="content" name="content" th:text="${post.content}"></textarea><br>  <!-- 내용 입력 필드 -->
-        <input type="submit" value="수정">  <!-- 수정 버튼 -->
+        <input type="submit" value="수정" onclick="return confirm('수정하시겠습니까?')">  <!-- 수정 버튼 -->
+        <a href="/posts">메인페이지</a> <!-- 홈 버튼 -->
     </form>
     </body>
 </div>

@@ -3,12 +3,13 @@
 <div layout:fragment="content" class="container my-3">
 <body>
 <h1>새 게시물 작성</h1>
-<form action="/create" method="post">  <!-- /create로 POST 요청을 보내는 form -->
+<form th:action="@{|/create|}" method="post">  <!-- /create로 POST 요청을 보내는 form -->
     <label for="title">제목:</label><br>
     <input type="text" id="title" name="title"><br>  <!-- 제목 입력 필드 -->
     <label for="content">내용:</label><br>
     <textarea id="content" name="content"></textarea><br>  <!-- 내용 입력 필드 -->
-    <input type="submit" value="등록">  <!-- 등록 버튼 -->
+    <input type="submit" value="등록">
+    <a href="/posts">뒤로가기</a><!-- 홈 버튼 -->
 </form>
 </body>
 </div>

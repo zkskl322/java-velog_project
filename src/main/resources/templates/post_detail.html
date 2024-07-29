@@ -1,17 +1,39 @@
 <!doctype html>
-<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8">
+    <h1>게시물 상세보기</h1>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <body>
-<th:block layout:fragment="content">
-    <h1 th:text="${post.title}"></h1>  <!-- 게시물 제목 -->
-    <p th:text="${post.content}"></p>  <!-- 게시물 내용 -->
-    <p th:text="${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm')}"></p>  <!-- 수정 시간 -->
-    <a href="/posts">뒤로가기</a>  <!-- 게시물 목록으로 돌아가기 링크 -->
-    <a th:href="@{/posts/{id}/update(id=${post.id})}">수정</a>  <!-- 수정 링크 -->
-    <td><a th:href="@{/posts/{id}/delete(id=${post.id})}">삭제</a></td>  <!-- 삭제 링크 -->
-</th:block>
+<div layout:fragment="content" class="container my-3">
+    <h3><label for="title">제목:</label><br></h3>
+    <h3 th:text="${post.title}"></h3> <!-- 게시물 제목 -->
+    <p th:text="${post.content}"></p> <!-- 게시물 내용 -->
+    <a href="/posts">뒤로가기</a> <!-- 게시물 목록으로 돌아가기 링크 -->
+    <a th:href="@{/posts/{id}/update(id=${post.id})}">수정</a> <!-- 수정 링크 -->
+    <td><a th:href="@{/posts/{id}/delete(id=${post.id})}" onclick="return confirm('삭제하시겠습니까?')">삭제</a></td> <!-- 삭제 링크 -->
+    <form th:action="@{|/comments|}" method="post">
+        <textarea name="content" id="content" rows="15"></textarea>
+        <input type="hidden" name="postId" th:value="${post.id}" />
+        <input type="submit" value="댓글 작성" />
+    </form>
+    <div th:each="comment : ${comments}">
+        <p th:id="'commentContent'+${comment.id}" th:text="${comment.content}"></p>
+        <p th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></p>
+        <a href="#" th:onclick="'showUpdateForm('+${comment.id}+'); return false;'">댓글 수정</a>
+        <a th:href="@{/comments/{id}/delete(id=${comment.id}, postId=${post.id})}" onclick="return confirm('삭제하시겠습니까?')">댓글 삭제</a>
+        <form th:id="'updateForm'+${comment.id}" style="display:none;" th:action="@{|/comments/${comment.id}/update|}" method="post">
+            <textarea name="content" rows="5" th:text="${comment.content}"></textarea>
+            <input type="hidden" name="postId" th:value="${post.id}" />
+            <input type="submit" value="댓글 수정" />
+        </form>
+    </div>
+</div>
+<script>
+    function showUpdateForm(id) {
+        document.getElementById('commentContent'+id).style.display = 'none';
+        document.getElementById('updateForm'+id).style.display = 'block';
+    }
+</script>
 </body>
 </html>

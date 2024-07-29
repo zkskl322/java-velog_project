@@ -1,4 +1,4 @@
-package com.example.blog;
+package com.example.blog.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,12 +16,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login", "/register").permitAll()
+                        .requestMatchers("/login", "signup", "find-username", "/reset-password").permitAll()
+                        .requestMatchers("/posts/**", "/comments/**", "/create/**", "/update/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin ->
                         formLogin.loginPage("/login")
-                                .defaultSuccessUrl("/")
+                                .defaultSuccessUrl("/posts")
                 )
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

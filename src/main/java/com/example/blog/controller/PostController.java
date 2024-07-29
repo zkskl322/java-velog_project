@@ -1,10 +1,14 @@
-package com.example.blog;
+package com.example.blog.controller;
 
+import com.example.blog.entity.Comment;
+import com.example.blog.entity.Post;
+import com.example.blog.dto.PostDto;
+import com.example.blog.service.CommentService;
+import com.example.blog.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -15,6 +19,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final CommentService commentService;
 
     @GetMapping("/posts")
     public String getAllPosts(Model model) {
@@ -38,6 +43,8 @@ public class PostController {
     public String getPost(@PathVariable Long id, Model model) {
         Post post = postService.findById(id); // id로 게시물 검색
         model.addAttribute("post", post); // 검색된 게시물을 모델에 추가
+        List<Comment> comments = commentService.findByPostId(id);
+        model.addAttribute("comments", comments);
         return "post_detail";
     }
 
