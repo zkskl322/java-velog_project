@@ -4,10 +4,13 @@ import com.example.blog.entity.Post;
 import com.example.blog.dto.PostDto;
 import com.example.blog.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +44,17 @@ public class PostService {
 
     public void delete(Long id) {
         postRepository.deleteById(id);
+    }
+
+    public Post getPostById(Long id) {
+        return postRepository.findById(id).orElse(null);
+    }
+
+    public List<Post> searchPosts(String keyword) {
+        return postRepository.findByTitleContaining(keyword);
+    }
+
+    public List<Post> findAllSorted(String sortBy) {
+        return postRepository.findAll(Sort.by(Sort.Direction.ASC, sortBy));
     }
 }

@@ -16,6 +16,7 @@ public class Comment {
     private Long id;
     private String content;
     private LocalDateTime createdAt;
+    private int likes;
 
     @ManyToOne
     private Post post;

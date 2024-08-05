@@ -1,11 +1,11 @@
 <!doctype html>
 <html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <h1>게시물 상세보기</h1>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
+    <h1>게시물 상세보기</h1>
     <h3><label for="title">제목:</label><br></h3>
     <h3 th:text="${post.title}"></h3> <!-- 게시물 제목 -->
     <p th:text="${post.content}"></p> <!-- 게시물 내용 -->
@@ -20,13 +20,22 @@
     <div th:each="comment : ${comments}">
         <p th:id="'commentContent'+${comment.id}" th:text="${comment.content}"></p>
         <p th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></p>
-        <a href="#" th:onclick="'showUpdateForm('+${comment.id}+'); return false;'">댓글 수정</a>
+        <a href="#" th:attr="onclick='showUpdateForm('+${comment.id}+'); return false;'">댓글 수정</a>
         <a th:href="@{/comments/{id}/delete(id=${comment.id}, postId=${post.id})}" onclick="return confirm('삭제하시겠습니까?')">댓글 삭제</a>
         <form th:id="'updateForm'+${comment.id}" style="display:none;" th:action="@{|/comments/${comment.id}/update|}" method="post">
             <textarea name="content" rows="5" th:text="${comment.content}"></textarea>
             <input type="hidden" name="postId" th:value="${post.id}" />
             <input type="submit" value="댓글 수정" />
         </form>
+        <form th:action="@{|/comments/${comment.id}/like|}" method="post">
+            <input type="hidden" name="postId" th:value="${post.id}" />
+            <input type="submit" value="좋아요" />
+        </form>
+        <form th:action="@{|/comments/${comment.id}/unlike|}" method="post">
+            <input type="hidden" name="postId" th:value="${post.id}" />
+            <input type="submit" value="좋아요 취소" />
+        </form>
+        <p>좋아요 수: <span th:text="${comment.likes}"></span></p>
     </div>
 </div>
 <script>

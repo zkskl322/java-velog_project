@@ -3,6 +3,14 @@
 <div layout:fragment="content" class="container my-3">
     <body>
     <h1>게시물 목록</h1>
+    <form th:action="@{/search}" method="get">
+        <input type="text" name="keyword" placeholder="검색어 입력">
+        <input type="submit" value="검색">
+    </form>
+    <form th:action="@{/posts}" method="get">
+        <button type="submit" name="sortBy" value="createdAt">날짜순</button>
+        <button type="submit" name="sortBy" value="title">이름순</button>
+    </form>
     <table>
         <thead>
         <tr>

@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -22,9 +23,14 @@ public class PostController {
     private final CommentService commentService;
 
     @GetMapping("/posts")
-    public String getAllPosts(Model model) {
-        List<Post> posts = postService.findAll();  // 모든 게시물 검색
-        model.addAttribute("posts", posts);  // 검색된 게시물을 모델에 추가. 모델은 뷰에 데이터를 전달
+    public String getAllPosts(Model model, @RequestParam(required = false) String sortBy) {
+        List<Post> posts;
+        if(sortBy != null) {
+            posts = postService.findAllSorted(sortBy);
+        } else {
+            posts = postService.findAll();
+        }
+        model.addAttribute("posts", posts);
         return "post_list";
     }
 
@@ -65,5 +71,12 @@ public class PostController {
     public String deletePost(@PathVariable Long id) {
         postService.delete(id);
         return "redirect:/posts";
+    }
+
+    @GetMapping("/search")
+    public String searchPosts(@RequestParam String keyword, Model model) {
+        List<Post> posts = postService.searchPosts(keyword);
+        model.addAttribute("posts", posts);
+        return "post_list";
     }
 }
