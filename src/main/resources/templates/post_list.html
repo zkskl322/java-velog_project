@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>게시물 목록</title>
+</head>
+<body>
 <div layout:fragment="content" class="container my-3">
-    <body>
     <h1>게시물 목록</h1>
     <form th:action="@{/search}" method="get">
         <input type="text" name="keyword" placeholder="검색어 입력">
@@ -22,13 +26,14 @@
         <tr th:each="post : ${posts}">
             <td><a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}"></a></td>
             <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
-            <td><a th:href="@{/posts/{id}/update(id=${post.id})}">수정</a></td>  <!-- 수정 링크 -->
-            <td><a th:href="@{/posts/{id}/delete(id=${post.id})}" onclick="return confirm('삭제하시겠습니까?')">삭제</a></td>  <!-- 삭제 링크 -->
+<!--            <td th:text="${post.tagNames}"></td>-->
+            <td><a th:href="@{/posts/{id}/update(id=${post.id})}">수정</a></td>
+            <td><a th:href="@{/posts/{id}/delete(id=${post.id})}" onclick="return confirm('삭제하시겠습니까?')">삭제</a></td>
         </tr>
         </tbody>
     </table>
     <a href="/create">새 게시물 작성</a>
     <a href="/logout">로그아웃</a>
-    </body>
 </div>
+</body>
 </html>

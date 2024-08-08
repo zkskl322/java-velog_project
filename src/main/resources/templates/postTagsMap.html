@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>포스트 목록</title>
+</head>
+<body>
+<h1>포스트 목록</h1>
+<ul>
+    <li th:each="post : ${posts}">
+        <h2 th:text="${post.title}">포스트 제목</h2>
+        <p>태그: <span th:text="${postTagsMap[post.id]}">태그 이름</span></p>
+    </li>
+</ul>
+</body>
+</html>

@@ -22,18 +22,4 @@ public class Member {
     private String username;
     private String password;
     private String email;
-
-    @Getter
-    @Setter
-    public class MemberForm {
-        @NotEmpty(message = "아이디는 필수항목입니다.")
-        private String username;
-
-        @NotEmpty(message = "비밀번호는 필수항목입니다.")
-        private String password;
-
-        @NotEmpty(message = "이메일은 필수항목입니다.")
-        @Email
-        private String email;
-    }
 }

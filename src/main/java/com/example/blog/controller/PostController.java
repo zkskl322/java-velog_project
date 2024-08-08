@@ -3,6 +3,7 @@ package com.example.blog.controller;
 import com.example.blog.entity.Comment;
 import com.example.blog.entity.Post;
 import com.example.blog.dto.PostDto;
+import com.example.blog.entity.Tag;
 import com.example.blog.service.CommentService;
 import com.example.blog.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,15 +27,27 @@ public class PostController {
     private final PostService postService;
     private final CommentService commentService;
 
+    // 포스트 목록을 가져오고 정렬 기준에 따라 정렬
     @GetMapping("/posts")
-    public String getAllPosts(Model model, @RequestParam(required = false) String sortBy) {
+    public String showPostList(@RequestParam(required = false) String sortBy, Model model) {
         List<Post> posts;
-        if(sortBy != null) {
+        if (sortBy != null) {
             posts = postService.findAllSorted(sortBy);
         } else {
             posts = postService.findAll();
         }
+
+        // 포스트 ID와 태그 이름을 매핑하는 맵 생성
+        Map<Long, String> postTagsMap = new HashMap<>();
+        for (Post post : posts) {
+            String tags = post.getTags().stream()
+                    .map(Tag::getName)
+                    .collect(Collectors.joining(", "));
+            postTagsMap.put(post.getId(), tags);
+        }
+
         model.addAttribute("posts", posts);
+        model.addAttribute("postTagsMap", postTagsMap);
         return "post_list";
     }
 
@@ -47,8 +64,8 @@ public class PostController {
 
     @GetMapping("/posts/{id}")
     public String getPost(@PathVariable Long id, Model model) {
-        Post post = postService.findById(id); // id로 게시물 검색
-        model.addAttribute("post", post); // 검색된 게시물을 모델에 추가
+        Post post = postService.findById(id);
+        model.addAttribute("post", post);
         List<Comment> comments = commentService.findByPostId(id);
         model.addAttribute("comments", comments);
         return "post_detail";
@@ -63,8 +80,8 @@ public class PostController {
 
     @PostMapping("/posts/{id}/update")
     public String updatePost(@PathVariable Long id, PostDto postDto) {
-        postService.update(id, postDto); // 게시물 수정
-        return "redirect:/posts/" + id; // 수정된 게시물의 세부 정보 페이지로 리다이렉트
+        postService.update(id, postDto);
+        return "redirect:/posts/" + id;
     }
 
     @GetMapping("/posts/{id}/delete")

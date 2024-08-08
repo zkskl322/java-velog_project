@@ -39,6 +39,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE'
+	// https://mvnrepository.com/artifact/javax.mail/mail
+	implementation 'javax.mail:mail:1.5.0-b01'
 }
 
 tasks.named('test') {
